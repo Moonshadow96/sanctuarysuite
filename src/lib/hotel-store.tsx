@@ -348,8 +348,8 @@ export function HotelProvider({ children }: { children: ReactNode }) {
   const placeOrder = useCallback(
     (input: {
       source: "room-service" | "restaurant";
-      roomNumber?: string;
-      table?: string;
+      roomNumber?: string | undefined;
+      table?: string | undefined;
       guestName: string;
       lines: OrderLine[];
     }) => {
