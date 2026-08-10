@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SiteRouteImport } from './routes/_site'
+import { Route as ManagementRouteImport } from './routes/management'
 import { Route as SiteIndexRouteImport } from './routes/_site/index'
 import { Route as SiteAboutRouteImport } from './routes/_site/about'
 import { Route as SiteAccountRouteImport } from './routes/_site/account'
@@ -21,11 +22,23 @@ import { Route as SiteExperienceRouteImport } from './routes/_site/experience'
 import { Route as SiteGalleryRouteImport } from './routes/_site/gallery'
 import { Route as SiteOffersRouteImport } from './routes/_site/offers'
 import { Route as SitePoliciesRouteImport } from './routes/_site/policies'
+import { Route as ManagementIndexRouteImport } from './routes/management/index'
+import { Route as ManagementDiningRouteImport } from './routes/management/dining'
+import { Route as ManagementEventsRouteImport } from './routes/management/events'
+import { Route as ManagementFrontDeskRouteImport } from './routes/management/front-desk'
+import { Route as ManagementHousekeepingRouteImport } from './routes/management/housekeeping'
+import { Route as ManagementInventoryRouteImport } from './routes/management/inventory'
+import { Route as ManagementStaffRouteImport } from './routes/management/staff'
 import { Route as SiteStayIndexRouteImport } from './routes/_site/stay.index'
 import { Route as SiteStaySlugRouteImport } from './routes/_site/stay.$slug'
 
 const SiteRoute = SiteRouteImport.update({
   id: '/_site',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ManagementRoute = ManagementRouteImport.update({
+  id: '/management',
+  path: '/management',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SiteIndexRoute = SiteIndexRouteImport.update({
@@ -83,6 +96,41 @@ const SitePoliciesRoute = SitePoliciesRouteImport.update({
   path: '/policies',
   getParentRoute: () => SiteRoute,
 } as any)
+const ManagementIndexRoute = ManagementIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ManagementRoute,
+} as any)
+const ManagementDiningRoute = ManagementDiningRouteImport.update({
+  id: '/dining',
+  path: '/dining',
+  getParentRoute: () => ManagementRoute,
+} as any)
+const ManagementEventsRoute = ManagementEventsRouteImport.update({
+  id: '/events',
+  path: '/events',
+  getParentRoute: () => ManagementRoute,
+} as any)
+const ManagementFrontDeskRoute = ManagementFrontDeskRouteImport.update({
+  id: '/front-desk',
+  path: '/front-desk',
+  getParentRoute: () => ManagementRoute,
+} as any)
+const ManagementHousekeepingRoute = ManagementHousekeepingRouteImport.update({
+  id: '/housekeeping',
+  path: '/housekeeping',
+  getParentRoute: () => ManagementRoute,
+} as any)
+const ManagementInventoryRoute = ManagementInventoryRouteImport.update({
+  id: '/inventory',
+  path: '/inventory',
+  getParentRoute: () => ManagementRoute,
+} as any)
+const ManagementStaffRoute = ManagementStaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
+  getParentRoute: () => ManagementRoute,
+} as any)
 const SiteStayIndexRoute = SiteStayIndexRouteImport.update({
   id: '/stay/',
   path: '/stay/',
@@ -96,6 +144,7 @@ const SiteStaySlugRoute = SiteStaySlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
+  '/management': typeof ManagementRouteWithChildren
   '/about': typeof SiteAboutRoute
   '/account': typeof SiteAccountRoute
   '/book': typeof SiteBookRoute
@@ -106,6 +155,13 @@ export interface FileRoutesByFullPath {
   '/gallery': typeof SiteGalleryRoute
   '/offers': typeof SiteOffersRoute
   '/policies': typeof SitePoliciesRoute
+  '/management/dining': typeof ManagementDiningRoute
+  '/management/events': typeof ManagementEventsRoute
+  '/management/front-desk': typeof ManagementFrontDeskRoute
+  '/management/housekeeping': typeof ManagementHousekeepingRoute
+  '/management/inventory': typeof ManagementInventoryRoute
+  '/management/staff': typeof ManagementStaffRoute
+  '/management/': typeof ManagementIndexRoute
   '/stay/$slug': typeof SiteStaySlugRoute
   '/stay/': typeof SiteStayIndexRoute
 }
@@ -120,13 +176,21 @@ export interface FileRoutesByTo {
   '/gallery': typeof SiteGalleryRoute
   '/offers': typeof SiteOffersRoute
   '/policies': typeof SitePoliciesRoute
+  '/management/dining': typeof ManagementDiningRoute
+  '/management/events': typeof ManagementEventsRoute
+  '/management/front-desk': typeof ManagementFrontDeskRoute
+  '/management/housekeeping': typeof ManagementHousekeepingRoute
+  '/management/inventory': typeof ManagementInventoryRoute
+  '/management/staff': typeof ManagementStaffRoute
   '/': typeof SiteIndexRoute
+  '/management': typeof ManagementIndexRoute
   '/stay/$slug': typeof SiteStaySlugRoute
   '/stay': typeof SiteStayIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_site': typeof SiteRouteWithChildren
+  '/management': typeof ManagementRouteWithChildren
   '/_site/about': typeof SiteAboutRoute
   '/_site/account': typeof SiteAccountRoute
   '/_site/book': typeof SiteBookRoute
@@ -137,7 +201,14 @@ export interface FileRoutesById {
   '/_site/gallery': typeof SiteGalleryRoute
   '/_site/offers': typeof SiteOffersRoute
   '/_site/policies': typeof SitePoliciesRoute
+  '/management/dining': typeof ManagementDiningRoute
+  '/management/events': typeof ManagementEventsRoute
+  '/management/front-desk': typeof ManagementFrontDeskRoute
+  '/management/housekeeping': typeof ManagementHousekeepingRoute
+  '/management/inventory': typeof ManagementInventoryRoute
+  '/management/staff': typeof ManagementStaffRoute
   '/_site/': typeof SiteIndexRoute
+  '/management/': typeof ManagementIndexRoute
   '/_site/stay/$slug': typeof SiteStaySlugRoute
   '/_site/stay/': typeof SiteStayIndexRoute
 }
@@ -145,6 +216,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/management'
     | '/about'
     | '/account'
     | '/book'
@@ -155,6 +227,13 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/offers'
     | '/policies'
+    | '/management/dining'
+    | '/management/events'
+    | '/management/front-desk'
+    | '/management/housekeeping'
+    | '/management/inventory'
+    | '/management/staff'
+    | '/management/'
     | '/stay/$slug'
     | '/stay/'
   fileRoutesByTo: FileRoutesByTo
@@ -169,12 +248,20 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/offers'
     | '/policies'
+    | '/management/dining'
+    | '/management/events'
+    | '/management/front-desk'
+    | '/management/housekeeping'
+    | '/management/inventory'
+    | '/management/staff'
     | '/'
+    | '/management'
     | '/stay/$slug'
     | '/stay'
   id:
     | '__root__'
     | '/_site'
+    | '/management'
     | '/_site/about'
     | '/_site/account'
     | '/_site/book'
@@ -185,13 +272,21 @@ export interface FileRouteTypes {
     | '/_site/gallery'
     | '/_site/offers'
     | '/_site/policies'
+    | '/management/dining'
+    | '/management/events'
+    | '/management/front-desk'
+    | '/management/housekeeping'
+    | '/management/inventory'
+    | '/management/staff'
     | '/_site/'
+    | '/management/'
     | '/_site/stay/$slug'
     | '/_site/stay/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   SiteRoute: typeof SiteRouteWithChildren
+  ManagementRoute: typeof ManagementRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -201,6 +296,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof SiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/management': {
+      id: '/management'
+      path: '/management'
+      fullPath: '/management'
+      preLoaderRoute: typeof ManagementRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_site/': {
@@ -280,6 +382,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitePoliciesRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/management/': {
+      id: '/management/'
+      path: '/'
+      fullPath: '/management/'
+      preLoaderRoute: typeof ManagementIndexRouteImport
+      parentRoute: typeof ManagementRoute
+    }
+    '/management/dining': {
+      id: '/management/dining'
+      path: '/dining'
+      fullPath: '/management/dining'
+      preLoaderRoute: typeof ManagementDiningRouteImport
+      parentRoute: typeof ManagementRoute
+    }
+    '/management/events': {
+      id: '/management/events'
+      path: '/events'
+      fullPath: '/management/events'
+      preLoaderRoute: typeof ManagementEventsRouteImport
+      parentRoute: typeof ManagementRoute
+    }
+    '/management/front-desk': {
+      id: '/management/front-desk'
+      path: '/front-desk'
+      fullPath: '/management/front-desk'
+      preLoaderRoute: typeof ManagementFrontDeskRouteImport
+      parentRoute: typeof ManagementRoute
+    }
+    '/management/housekeeping': {
+      id: '/management/housekeeping'
+      path: '/housekeeping'
+      fullPath: '/management/housekeeping'
+      preLoaderRoute: typeof ManagementHousekeepingRouteImport
+      parentRoute: typeof ManagementRoute
+    }
+    '/management/inventory': {
+      id: '/management/inventory'
+      path: '/inventory'
+      fullPath: '/management/inventory'
+      preLoaderRoute: typeof ManagementInventoryRouteImport
+      parentRoute: typeof ManagementRoute
+    }
+    '/management/staff': {
+      id: '/management/staff'
+      path: '/staff'
+      fullPath: '/management/staff'
+      preLoaderRoute: typeof ManagementStaffRouteImport
+      parentRoute: typeof ManagementRoute
+    }
     '/_site/stay/': {
       id: '/_site/stay/'
       path: '/stay'
@@ -331,8 +482,33 @@ const SiteRouteChildren: SiteRouteChildren = {
 
 const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
 
+interface ManagementRouteChildren {
+  ManagementDiningRoute: typeof ManagementDiningRoute
+  ManagementEventsRoute: typeof ManagementEventsRoute
+  ManagementFrontDeskRoute: typeof ManagementFrontDeskRoute
+  ManagementHousekeepingRoute: typeof ManagementHousekeepingRoute
+  ManagementInventoryRoute: typeof ManagementInventoryRoute
+  ManagementStaffRoute: typeof ManagementStaffRoute
+  ManagementIndexRoute: typeof ManagementIndexRoute
+}
+
+const ManagementRouteChildren: ManagementRouteChildren = {
+  ManagementDiningRoute: ManagementDiningRoute,
+  ManagementEventsRoute: ManagementEventsRoute,
+  ManagementFrontDeskRoute: ManagementFrontDeskRoute,
+  ManagementHousekeepingRoute: ManagementHousekeepingRoute,
+  ManagementInventoryRoute: ManagementInventoryRoute,
+  ManagementStaffRoute: ManagementStaffRoute,
+  ManagementIndexRoute: ManagementIndexRoute,
+}
+
+const ManagementRouteWithChildren = ManagementRoute._addFileChildren(
+  ManagementRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   SiteRoute: SiteRouteWithChildren,
+  ManagementRoute: ManagementRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
