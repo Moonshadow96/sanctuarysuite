@@ -65,9 +65,9 @@ export interface Room {
   rate: number;
   status: RoomStatus;
   housekeeping: HousekeepingStatus;
-  guestName?: string;
+  guestName?: string | undefined;
   lastCleaned: string;
-  assignedTo?: string;
+  assignedTo?: string | undefined;
 }
 
 export interface Charge {
@@ -85,7 +85,7 @@ export interface Reservation {
   email: string;
   phone: string;
   roomTypeId: string;
-  roomNumber?: string;
+  roomNumber?: string | undefined;
   checkIn: string;
   checkOut: string;
   guests: number;
@@ -94,7 +94,7 @@ export interface Reservation {
   total: number;
   status: ReservationStatus;
   payment: PaymentStatus;
-  requests?: string;
+  requests?: string | undefined;
   charges: Charge[];
   createdAt: string;
 }
@@ -118,9 +118,9 @@ export interface OrderLine {
 export interface RestaurantOrder {
   id: string;
   source: "room-service" | "restaurant";
-  roomNumber?: string;
-  table?: string;
-  reservationId?: string;
+  roomNumber?: string | undefined;
+  table?: string | undefined;
+  reservationId?: string | undefined;
   guestName: string;
   lines: OrderLine[];
   total: number;
@@ -132,7 +132,7 @@ export interface FacilityBooking {
   id: string;
   facility: string;
   guestName: string;
-  roomNumber?: string;
+  roomNumber?: string | undefined;
   date: string;
   slot: string;
   guests: number;
@@ -149,8 +149,8 @@ export interface EventInquiry {
   guests: number;
   space: string;
   catering: string;
-  services?: string;
-  message?: string;
+  services?: string | undefined;
+  message?: string | undefined;
   status: EventStatus;
 }
 
