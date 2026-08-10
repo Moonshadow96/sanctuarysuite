@@ -15,6 +15,7 @@ import { Route as SiteIndexRouteImport } from './routes/_site/index'
 import { Route as SiteAboutRouteImport } from './routes/_site/about'
 import { Route as SiteAccountRouteImport } from './routes/_site/account'
 import { Route as SiteBookRouteImport } from './routes/_site/book'
+import { Route as SiteCellarRouteImport } from './routes/_site/cellar'
 import { Route as SiteContactRouteImport } from './routes/_site/contact'
 import { Route as SiteDineRouteImport } from './routes/_site/dine'
 import { Route as SiteEventsRouteImport } from './routes/_site/events'
@@ -23,6 +24,7 @@ import { Route as SiteGalleryRouteImport } from './routes/_site/gallery'
 import { Route as SiteOffersRouteImport } from './routes/_site/offers'
 import { Route as SitePoliciesRouteImport } from './routes/_site/policies'
 import { Route as ManagementIndexRouteImport } from './routes/management/index'
+import { Route as ManagementCellarRouteImport } from './routes/management/cellar'
 import { Route as ManagementDiningRouteImport } from './routes/management/dining'
 import { Route as ManagementEventsRouteImport } from './routes/management/events'
 import { Route as ManagementFrontDeskRouteImport } from './routes/management/front-desk'
@@ -59,6 +61,11 @@ const SiteAccountRoute = SiteAccountRouteImport.update({
 const SiteBookRoute = SiteBookRouteImport.update({
   id: '/book',
   path: '/book',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteCellarRoute = SiteCellarRouteImport.update({
+  id: '/cellar',
+  path: '/cellar',
   getParentRoute: () => SiteRoute,
 } as any)
 const SiteContactRoute = SiteContactRouteImport.update({
@@ -99,6 +106,11 @@ const SitePoliciesRoute = SitePoliciesRouteImport.update({
 const ManagementIndexRoute = ManagementIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => ManagementRoute,
+} as any)
+const ManagementCellarRoute = ManagementCellarRouteImport.update({
+  id: '/cellar',
+  path: '/cellar',
   getParentRoute: () => ManagementRoute,
 } as any)
 const ManagementDiningRoute = ManagementDiningRouteImport.update({
@@ -148,6 +160,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof SiteAboutRoute
   '/account': typeof SiteAccountRoute
   '/book': typeof SiteBookRoute
+  '/cellar': typeof SiteCellarRoute
   '/contact': typeof SiteContactRoute
   '/dine': typeof SiteDineRoute
   '/events': typeof SiteEventsRoute
@@ -155,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/gallery': typeof SiteGalleryRoute
   '/offers': typeof SiteOffersRoute
   '/policies': typeof SitePoliciesRoute
+  '/management/cellar': typeof ManagementCellarRoute
   '/management/dining': typeof ManagementDiningRoute
   '/management/events': typeof ManagementEventsRoute
   '/management/front-desk': typeof ManagementFrontDeskRoute
@@ -169,6 +183,7 @@ export interface FileRoutesByTo {
   '/about': typeof SiteAboutRoute
   '/account': typeof SiteAccountRoute
   '/book': typeof SiteBookRoute
+  '/cellar': typeof SiteCellarRoute
   '/contact': typeof SiteContactRoute
   '/dine': typeof SiteDineRoute
   '/events': typeof SiteEventsRoute
@@ -176,6 +191,7 @@ export interface FileRoutesByTo {
   '/gallery': typeof SiteGalleryRoute
   '/offers': typeof SiteOffersRoute
   '/policies': typeof SitePoliciesRoute
+  '/management/cellar': typeof ManagementCellarRoute
   '/management/dining': typeof ManagementDiningRoute
   '/management/events': typeof ManagementEventsRoute
   '/management/front-desk': typeof ManagementFrontDeskRoute
@@ -194,6 +210,7 @@ export interface FileRoutesById {
   '/_site/about': typeof SiteAboutRoute
   '/_site/account': typeof SiteAccountRoute
   '/_site/book': typeof SiteBookRoute
+  '/_site/cellar': typeof SiteCellarRoute
   '/_site/contact': typeof SiteContactRoute
   '/_site/dine': typeof SiteDineRoute
   '/_site/events': typeof SiteEventsRoute
@@ -201,6 +218,7 @@ export interface FileRoutesById {
   '/_site/gallery': typeof SiteGalleryRoute
   '/_site/offers': typeof SiteOffersRoute
   '/_site/policies': typeof SitePoliciesRoute
+  '/management/cellar': typeof ManagementCellarRoute
   '/management/dining': typeof ManagementDiningRoute
   '/management/events': typeof ManagementEventsRoute
   '/management/front-desk': typeof ManagementFrontDeskRoute
@@ -220,6 +238,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/account'
     | '/book'
+    | '/cellar'
     | '/contact'
     | '/dine'
     | '/events'
@@ -227,6 +246,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/offers'
     | '/policies'
+    | '/management/cellar'
     | '/management/dining'
     | '/management/events'
     | '/management/front-desk'
@@ -241,6 +261,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/account'
     | '/book'
+    | '/cellar'
     | '/contact'
     | '/dine'
     | '/events'
@@ -248,6 +269,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/offers'
     | '/policies'
+    | '/management/cellar'
     | '/management/dining'
     | '/management/events'
     | '/management/front-desk'
@@ -265,6 +287,7 @@ export interface FileRouteTypes {
     | '/_site/about'
     | '/_site/account'
     | '/_site/book'
+    | '/_site/cellar'
     | '/_site/contact'
     | '/_site/dine'
     | '/_site/events'
@@ -272,6 +295,7 @@ export interface FileRouteTypes {
     | '/_site/gallery'
     | '/_site/offers'
     | '/_site/policies'
+    | '/management/cellar'
     | '/management/dining'
     | '/management/events'
     | '/management/front-desk'
@@ -333,6 +357,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteBookRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/_site/cellar': {
+      id: '/_site/cellar'
+      path: '/cellar'
+      fullPath: '/cellar'
+      preLoaderRoute: typeof SiteCellarRouteImport
+      parentRoute: typeof SiteRoute
+    }
     '/_site/contact': {
       id: '/_site/contact'
       path: '/contact'
@@ -387,6 +418,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/management/'
       preLoaderRoute: typeof ManagementIndexRouteImport
+      parentRoute: typeof ManagementRoute
+    }
+    '/management/cellar': {
+      id: '/management/cellar'
+      path: '/cellar'
+      fullPath: '/management/cellar'
+      preLoaderRoute: typeof ManagementCellarRouteImport
       parentRoute: typeof ManagementRoute
     }
     '/management/dining': {
@@ -452,6 +490,7 @@ interface SiteRouteChildren {
   SiteAboutRoute: typeof SiteAboutRoute
   SiteAccountRoute: typeof SiteAccountRoute
   SiteBookRoute: typeof SiteBookRoute
+  SiteCellarRoute: typeof SiteCellarRoute
   SiteContactRoute: typeof SiteContactRoute
   SiteDineRoute: typeof SiteDineRoute
   SiteEventsRoute: typeof SiteEventsRoute
@@ -468,6 +507,7 @@ const SiteRouteChildren: SiteRouteChildren = {
   SiteAboutRoute: SiteAboutRoute,
   SiteAccountRoute: SiteAccountRoute,
   SiteBookRoute: SiteBookRoute,
+  SiteCellarRoute: SiteCellarRoute,
   SiteContactRoute: SiteContactRoute,
   SiteDineRoute: SiteDineRoute,
   SiteEventsRoute: SiteEventsRoute,
@@ -483,6 +523,7 @@ const SiteRouteChildren: SiteRouteChildren = {
 const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
 
 interface ManagementRouteChildren {
+  ManagementCellarRoute: typeof ManagementCellarRoute
   ManagementDiningRoute: typeof ManagementDiningRoute
   ManagementEventsRoute: typeof ManagementEventsRoute
   ManagementFrontDeskRoute: typeof ManagementFrontDeskRoute
@@ -493,6 +534,7 @@ interface ManagementRouteChildren {
 }
 
 const ManagementRouteChildren: ManagementRouteChildren = {
+  ManagementCellarRoute: ManagementCellarRoute,
   ManagementDiningRoute: ManagementDiningRoute,
   ManagementEventsRoute: ManagementEventsRoute,
   ManagementFrontDeskRoute: ManagementFrontDeskRoute,

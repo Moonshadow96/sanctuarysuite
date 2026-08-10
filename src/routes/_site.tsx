@@ -1,5 +1,6 @@
 import { Outlet, createFileRoute } from "@tanstack/react-router";
 
+import { ConciergeWidget } from "@/components/site/ConciergeWidget";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 
@@ -15,6 +16,7 @@ function SiteLayout() {
         <Outlet />
       </main>
       <SiteFooter />
+      <ConciergeWidget />
     </div>
   );
 }

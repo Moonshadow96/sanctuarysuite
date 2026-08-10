@@ -8,8 +8,8 @@ import presidentialImg from "@/assets/room-presidential.jpg";
 export const HOTEL = {
   name: "The Splendid Sanctuary",
   tagline: "Where Luxury Meets Tranquility",
-  address: "22 Sanctuary Crescent, Park View",
-  phone: "+234 800 000 0000",
+  address: "22 Sanctuary Crescent, Park View Estate, Ikoyi, Lagos, Nigeria",
+  phone: "+234 816 952 6523",
   email: "reservations@splendidsanctuary.com",
   hours: "Reception open 24 hours · Restaurant 07:00 – 23:00",
   currency: "₦",
@@ -212,7 +212,7 @@ export const roomTypes: RoomType[] = [
     short: "Comfortable and elegant accommodation for a restful stay.",
     description:
       "A serene, softly lit retreat finished in warm neutrals with generous natural light. Designed for guests who want calm, comfort and everything close at hand.",
-    price: 145000,
+    price: 185000,
     capacity: 2,
     size: "32 m²",
     bed: "Queen bed",
@@ -234,7 +234,7 @@ export const roomTypes: RoomType[] = [
     short: "More spacious accommodation with enhanced amenities.",
     description:
       "Additional space, a reading corner and elevated finishes. The Deluxe Room suits longer stays and guests who appreciate a little more room to breathe.",
-    price: 210000,
+    price: 275000,
     capacity: 3,
     size: "44 m²",
     bed: "King bed",
@@ -256,7 +256,7 @@ export const roomTypes: RoomType[] = [
     short: "A spacious suite with separate living and sleeping areas.",
     description:
       "A suite arranged as two distinct spaces — a private bedroom and a lounge with a dedicated workspace — for guests balancing business and rest.",
-    price: 340000,
+    price: 425000,
     capacity: 3,
     size: "68 m²",
     bed: "King bed",
@@ -278,7 +278,7 @@ export const roomTypes: RoomType[] = [
     short: "The highest level of accommodation at the Sanctuary.",
     description:
       "Our signature residence: a private lounge, dining area and expansive bathroom, with dedicated service arranged around your preferences.",
-    price: 620000,
+    price: 750000,
     capacity: 4,
     size: "112 m²",
     bed: "King bed + daybed",
@@ -306,14 +306,14 @@ const iso = (offsetDays: number) => {
 export const todayISO = iso(0);
 
 export const seedRooms: Room[] = [
-  { id: "r101", number: "101", typeId: "luxury", floor: 1, rate: 145000, status: "available", housekeeping: "ready", lastCleaned: iso(0) },
-  { id: "r102", number: "102", typeId: "luxury", floor: 1, rate: 145000, status: "occupied", housekeeping: "dirty", guestName: "Adaeze Okonkwo", lastCleaned: iso(-1) },
-  { id: "r103", number: "103", typeId: "luxury", floor: 1, rate: 145000, status: "cleaning", housekeeping: "cleaning", lastCleaned: iso(-1), assignedTo: "Grace Umeh" },
-  { id: "r201", number: "201", typeId: "deluxe", floor: 2, rate: 210000, status: "available", housekeeping: "ready", lastCleaned: iso(0) },
-  { id: "r202", number: "202", typeId: "deluxe", floor: 2, rate: 210000, status: "reserved", housekeeping: "ready", guestName: "Tunde Bakare", lastCleaned: iso(0) },
-  { id: "r204", number: "204", typeId: "executive", floor: 2, rate: 340000, status: "available", housekeeping: "ready", lastCleaned: iso(0) },
-  { id: "r301", number: "301", typeId: "executive", floor: 3, rate: 340000, status: "occupied", housekeeping: "dirty", guestName: "Helena Marsh", lastCleaned: iso(-2) },
-  { id: "r401", number: "401", typeId: "presidential", floor: 4, rate: 620000, status: "maintenance", housekeeping: "maintenance", lastCleaned: iso(-3) },
+  { id: "r101", number: "101", typeId: "luxury", floor: 1, rate: 185000, status: "available", housekeeping: "ready", lastCleaned: iso(0) },
+  { id: "r102", number: "102", typeId: "luxury", floor: 1, rate: 185000, status: "occupied", housekeeping: "dirty", guestName: "Adaeze Okonkwo", lastCleaned: iso(-1) },
+  { id: "r103", number: "103", typeId: "luxury", floor: 1, rate: 185000, status: "cleaning", housekeeping: "cleaning", lastCleaned: iso(-1), assignedTo: "Grace Umeh" },
+  { id: "r201", number: "201", typeId: "deluxe", floor: 2, rate: 275000, status: "available", housekeeping: "ready", lastCleaned: iso(0) },
+  { id: "r202", number: "202", typeId: "deluxe", floor: 2, rate: 275000, status: "reserved", housekeeping: "ready", guestName: "Tunde Bakare", lastCleaned: iso(0) },
+  { id: "r204", number: "204", typeId: "executive", floor: 2, rate: 425000, status: "available", housekeeping: "ready", lastCleaned: iso(0) },
+  { id: "r301", number: "301", typeId: "executive", floor: 3, rate: 425000, status: "occupied", housekeeping: "dirty", guestName: "Helena Marsh", lastCleaned: iso(-2) },
+  { id: "r401", number: "401", typeId: "presidential", floor: 4, rate: 750000, status: "maintenance", housekeeping: "maintenance", lastCleaned: iso(-3) },
 ];
 
 export const seedReservations: Reservation[] = [

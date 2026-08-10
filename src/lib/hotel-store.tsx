@@ -36,6 +36,7 @@ import {
   type HousekeepingStatus,
   type StaffMember,
 } from "./hotel-data";
+import { wines as seedWines, type Wine } from "./wine-data";
 
 const STORAGE_KEY = "splendid-sanctuary-state-v1";
 
@@ -55,6 +56,7 @@ interface HotelState {
   inventory: InventoryItem[];
   notifications: Notification[];
   menu: MenuItem[];
+  wines: Wine[];
   session: StaffSession | null;
   guestReference: string | null;
 }
@@ -69,6 +71,7 @@ const initialState: HotelState = {
   inventory: seedInventory,
   notifications: seedNotifications,
   menu: seedMenu,
+  wines: seedWines,
   session: null,
   guestReference: null,
 };
@@ -107,10 +110,17 @@ interface HotelContextValue extends HotelState {
     lines: OrderLine[];
   }) => RestaurantOrder;
   setOrderStatus: (orderId: string, status: OrderStatus) => void;
+  orderWine: (input: {
+    wineId: string;
+    qty: number;
+    guestName: string;
+    roomNumber?: string | undefined;
+  }) => { ok: boolean; error?: string | undefined };
   addFacilityBooking: (input: Omit<FacilityBooking, "id">) => void;
   addEventInquiry: (input: Omit<EventInquiry, "id" | "status">) => EventInquiry;
   setEventStatus: (id: string, status: EventStatus) => void;
   adjustInventory: (id: string, delta: number) => void;
+  adjustWineStock: (wineId: string, delta: number) => void;
   markNotificationsRead: () => void;
   signIn: (email: string, password: string) => { ok: boolean; error?: string | undefined };
   signOut: () => void;
@@ -407,6 +417,70 @@ export function HotelProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
+  const orderWine = useCallback(
+    (input: { wineId: string; qty: number; guestName: string; roomNumber?: string | undefined }) => {
+      let result: { ok: boolean; error?: string | undefined } = { ok: true };
+      setState((prev) => {
+        const wine = prev.wines.find((w) => w.id === input.wineId);
+        if (!wine) {
+          result = { ok: false, error: "That wine is not in the cellar." };
+          return prev;
+        }
+        if (wine.quantity < input.qty) {
+          result = {
+            ok: false,
+            error:
+              wine.quantity === 0
+                ? `${wine.producer} ${wine.vintage} is not currently in the cellar.`
+                : `Only ${wine.quantity} bottle(s) of ${wine.producer} ${wine.vintage} remain.`,
+          };
+          return prev;
+        }
+        const label = `${wine.producer} ${wine.name} ${wine.vintage} · ${input.qty} bottle(s)`;
+        const amount = wine.price * input.qty;
+        const reservation = prev.reservations.find(
+          (r) => r.roomNumber === input.roomNumber && r.status === "checked-in",
+        );
+        const charge: Charge = {
+          id: uid("c"),
+          label,
+          category: "other",
+          amount,
+          at: nowISO(),
+        };
+        return {
+          ...prev,
+          wines: prev.wines.map((w) =>
+            w.id === wine.id ? { ...w, quantity: w.quantity - input.qty } : w,
+          ),
+          reservations: reservation
+            ? prev.reservations.map((r) =>
+                r.id === reservation.id ? { ...r, charges: [...r.charges, charge] } : r,
+              )
+            : prev.reservations,
+          notifications: [
+            notify(
+              "Cellar order",
+              `${input.guestName}${input.roomNumber ? ` · Room ${input.roomNumber}` : ""} · ${label}`,
+            ),
+            ...prev.notifications,
+          ],
+        };
+      });
+      return result;
+    },
+    [],
+  );
+
+  const adjustWineStock = useCallback((wineId: string, delta: number) => {
+    setState((prev) => ({
+      ...prev,
+      wines: prev.wines.map((w) =>
+        w.id === wineId ? { ...w, quantity: Math.max(0, w.quantity + delta) } : w,
+      ),
+    }));
+  }, []);
+
   const addFacilityBooking = useCallback((input: Omit<FacilityBooking, "id">) => {
     setState((prev) => {
       const reservation = prev.reservations.find(
@@ -521,6 +595,8 @@ export function HotelProvider({ children }: { children: ReactNode }) {
       setHousekeeping,
       placeOrder,
       setOrderStatus,
+      orderWine,
+      adjustWineStock,
       addFacilityBooking,
       addEventInquiry,
       setEventStatus,
@@ -543,6 +619,8 @@ export function HotelProvider({ children }: { children: ReactNode }) {
       setHousekeeping,
       placeOrder,
       setOrderStatus,
+      orderWine,
+      adjustWineStock,
       addFacilityBooking,
       addEventInquiry,
       setEventStatus,

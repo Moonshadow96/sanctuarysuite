@@ -73,6 +73,7 @@ function Gate() {
     { to: "/management/front-desk", label: "Front desk" },
     { to: "/management/housekeeping", label: "Housekeeping" },
     { to: "/management/dining", label: "Food & beverage" },
+    { to: "/management/cellar", label: "Cellar" },
     { to: "/management/events", label: "Events" },
     { to: "/management/inventory", label: "Inventory" },
     { to: "/management/staff", label: "Staff" },
