@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { OpsInsightPanel } from "@/components/management/OpsInsightPanel";
 import { money } from "@/lib/hotel-data";
 import { useHotel } from "@/lib/hotel-store";
 
@@ -8,7 +9,8 @@ export const Route = createFileRoute("/management/")({
 });
 
 function Dashboard() {
-  const { rooms, reservations, orders, events, inventory, notifications } = useHotel();
+  const { rooms, reservations, orders, events, inventory, notifications, wines } = useHotel();
+
 
   const occupied = rooms.filter((r) => r.status === "occupied").length;
   const occupancy = Math.round((occupied / Math.max(1, rooms.length)) * 100);
@@ -32,6 +34,28 @@ function Dashboard() {
     { label: "Alerts", value: String(notifications.filter((n) => !n.read).length), note: "Unread notifications" },
   ];
 
+  const lowWine = wines.filter((w) => w.quantity <= w.reorderAt);
+
+  const aiContext = [
+    `Date: ${new Date().toISOString().slice(0, 10)}`,
+    `Occupancy: ${occupancy}% (${occupied} of ${rooms.length} rooms occupied)`,
+    `Arrivals due: ${arrivals}. In-house guests: ${inHouse}.`,
+    `Revenue booked (active reservations): ${money(revenue)}`,
+    `Open food & beverage orders: ${openOrders}`,
+    `Open event enquiries: ${openEvents}`,
+    `Inventory items at or below reorder level: ${inventory
+      .filter((i) => i.quantity <= i.reorderAt)
+      .map((i) => `${i.name} (${i.quantity}/${i.reorderAt})`)
+      .join(", ") || "none"}`,
+    `Cellar bottles at or below reorder level: ${
+      lowWine.map((w) => `${w.producer} ${w.vintage} (${w.quantity})`).join(", ") || "none"
+    }`,
+    `Room status breakdown: ${(["available", "occupied", "cleaning", "maintenance"] as const)
+      .map((s) => `${s}: ${rooms.filter((r) => r.status === s).length}`)
+      .join(", ")}`,
+    `Recent activity: ${notifications.slice(0, 6).map((n) => n.title).join("; ") || "none"}`,
+  ].join("\n");
+
   return (
     <div className="space-y-10">
       <section>
@@ -47,7 +71,10 @@ function Dashboard() {
         </div>
       </section>
 
+      <OpsInsightPanel context={aiContext} />
+
       <section>
+
         <h2 className="font-display text-2xl">Activity feed</h2>
         <ul className="mt-4 divide-y divide-border/70 rounded-lg border border-border/70 bg-card">
           {notifications.slice(0, 8).map((n) => (
