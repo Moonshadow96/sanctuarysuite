@@ -81,7 +81,10 @@ function ExperiencePage() {
             className="grid gap-4 rounded-lg border border-border/70 bg-card p-6 sm:grid-cols-2"
             onSubmit={(e) => {
               e.preventDefault();
-              if (!name.trim()) return toast.error("Please enter your name.");
+              if (!name.trim()) {
+                toast.error("Please enter your name.");
+                return;
+              }
               const selected = facilities.find((f) => f.name === facility)!;
               addFacilityBooking({
                 facility,

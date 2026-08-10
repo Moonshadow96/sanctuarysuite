@@ -46,10 +46,17 @@ function DinePage() {
     });
 
   const submit = () => {
-    if (!lines.length) return toast.error("Add at least one item to your order.");
-    if (!guestName.trim()) return toast.error("Please enter the guest name.");
+    if (!lines.length) {
+      toast.error("Add at least one item to your order.");
+      return;
+    }
+    if (!guestName.trim()) {
+      toast.error("Please enter the guest name.");
+      return;
+    }
     if (!rooms.some((r) => r.number === roomNumber.trim())) {
-      return toast.error("Enter a valid room number (e.g. 102).");
+      toast.error("Enter a valid room number (e.g. 102).");
+      return;
     }
     placeOrder({ source: "room-service", roomNumber: roomNumber.trim(), guestName: guestName.trim(), lines });
     setCart({});

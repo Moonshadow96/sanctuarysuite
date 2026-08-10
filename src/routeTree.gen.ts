@@ -9,61 +9,507 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as SiteRouteImport } from './routes/_site'
+import { Route as ManagementRouteImport } from './routes/management'
+import { Route as SiteIndexRouteImport } from './routes/_site/index'
+import { Route as SiteAboutRouteImport } from './routes/_site/about'
+import { Route as SiteAccountRouteImport } from './routes/_site/account'
+import { Route as SiteBookRouteImport } from './routes/_site/book'
+import { Route as SiteContactRouteImport } from './routes/_site/contact'
+import { Route as SiteDineRouteImport } from './routes/_site/dine'
+import { Route as SiteEventsRouteImport } from './routes/_site/events'
+import { Route as SiteExperienceRouteImport } from './routes/_site/experience'
+import { Route as SiteGalleryRouteImport } from './routes/_site/gallery'
+import { Route as SiteOffersRouteImport } from './routes/_site/offers'
+import { Route as SitePoliciesRouteImport } from './routes/_site/policies'
+import { Route as ManagementIndexRouteImport } from './routes/management/index'
+import { Route as ManagementDiningRouteImport } from './routes/management/dining'
+import { Route as ManagementEventsRouteImport } from './routes/management/events'
+import { Route as ManagementFrontDeskRouteImport } from './routes/management/front-desk'
+import { Route as ManagementHousekeepingRouteImport } from './routes/management/housekeeping'
+import { Route as ManagementInventoryRouteImport } from './routes/management/inventory'
+import { Route as ManagementStaffRouteImport } from './routes/management/staff'
+import { Route as SiteStayIndexRouteImport } from './routes/_site/stay.index'
+import { Route as SiteStaySlugRouteImport } from './routes/_site/stay.$slug'
 
-const IndexRoute = IndexRouteImport.update({
+const SiteRoute = SiteRouteImport.update({
+  id: '/_site',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ManagementRoute = ManagementRouteImport.update({
+  id: '/management',
+  path: '/management',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SiteIndexRoute = SiteIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteAboutRoute = SiteAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteAccountRoute = SiteAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteBookRoute = SiteBookRouteImport.update({
+  id: '/book',
+  path: '/book',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteContactRoute = SiteContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteDineRoute = SiteDineRouteImport.update({
+  id: '/dine',
+  path: '/dine',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteEventsRoute = SiteEventsRouteImport.update({
+  id: '/events',
+  path: '/events',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteExperienceRoute = SiteExperienceRouteImport.update({
+  id: '/experience',
+  path: '/experience',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteGalleryRoute = SiteGalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteOffersRoute = SiteOffersRouteImport.update({
+  id: '/offers',
+  path: '/offers',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SitePoliciesRoute = SitePoliciesRouteImport.update({
+  id: '/policies',
+  path: '/policies',
+  getParentRoute: () => SiteRoute,
+} as any)
+const ManagementIndexRoute = ManagementIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ManagementRoute,
+} as any)
+const ManagementDiningRoute = ManagementDiningRouteImport.update({
+  id: '/dining',
+  path: '/dining',
+  getParentRoute: () => ManagementRoute,
+} as any)
+const ManagementEventsRoute = ManagementEventsRouteImport.update({
+  id: '/events',
+  path: '/events',
+  getParentRoute: () => ManagementRoute,
+} as any)
+const ManagementFrontDeskRoute = ManagementFrontDeskRouteImport.update({
+  id: '/front-desk',
+  path: '/front-desk',
+  getParentRoute: () => ManagementRoute,
+} as any)
+const ManagementHousekeepingRoute = ManagementHousekeepingRouteImport.update({
+  id: '/housekeeping',
+  path: '/housekeeping',
+  getParentRoute: () => ManagementRoute,
+} as any)
+const ManagementInventoryRoute = ManagementInventoryRouteImport.update({
+  id: '/inventory',
+  path: '/inventory',
+  getParentRoute: () => ManagementRoute,
+} as any)
+const ManagementStaffRoute = ManagementStaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
+  getParentRoute: () => ManagementRoute,
+} as any)
+const SiteStayIndexRoute = SiteStayIndexRouteImport.update({
+  id: '/stay/',
+  path: '/stay/',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteStaySlugRoute = SiteStaySlugRouteImport.update({
+  id: '/stay/$slug',
+  path: '/stay/$slug',
+  getParentRoute: () => SiteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof SiteIndexRoute
+  '/management': typeof ManagementRouteWithChildren
+  '/about': typeof SiteAboutRoute
+  '/account': typeof SiteAccountRoute
+  '/book': typeof SiteBookRoute
+  '/contact': typeof SiteContactRoute
+  '/dine': typeof SiteDineRoute
+  '/events': typeof SiteEventsRoute
+  '/experience': typeof SiteExperienceRoute
+  '/gallery': typeof SiteGalleryRoute
+  '/offers': typeof SiteOffersRoute
+  '/policies': typeof SitePoliciesRoute
+  '/management/dining': typeof ManagementDiningRoute
+  '/management/events': typeof ManagementEventsRoute
+  '/management/front-desk': typeof ManagementFrontDeskRoute
+  '/management/housekeeping': typeof ManagementHousekeepingRoute
+  '/management/inventory': typeof ManagementInventoryRoute
+  '/management/staff': typeof ManagementStaffRoute
+  '/management/': typeof ManagementIndexRoute
+  '/stay/$slug': typeof SiteStaySlugRoute
+  '/stay/': typeof SiteStayIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/about': typeof SiteAboutRoute
+  '/account': typeof SiteAccountRoute
+  '/book': typeof SiteBookRoute
+  '/contact': typeof SiteContactRoute
+  '/dine': typeof SiteDineRoute
+  '/events': typeof SiteEventsRoute
+  '/experience': typeof SiteExperienceRoute
+  '/gallery': typeof SiteGalleryRoute
+  '/offers': typeof SiteOffersRoute
+  '/policies': typeof SitePoliciesRoute
+  '/management/dining': typeof ManagementDiningRoute
+  '/management/events': typeof ManagementEventsRoute
+  '/management/front-desk': typeof ManagementFrontDeskRoute
+  '/management/housekeeping': typeof ManagementHousekeepingRoute
+  '/management/inventory': typeof ManagementInventoryRoute
+  '/management/staff': typeof ManagementStaffRoute
+  '/': typeof SiteIndexRoute
+  '/management': typeof ManagementIndexRoute
+  '/stay/$slug': typeof SiteStaySlugRoute
+  '/stay': typeof SiteStayIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_site': typeof SiteRouteWithChildren
+  '/management': typeof ManagementRouteWithChildren
+  '/_site/about': typeof SiteAboutRoute
+  '/_site/account': typeof SiteAccountRoute
+  '/_site/book': typeof SiteBookRoute
+  '/_site/contact': typeof SiteContactRoute
+  '/_site/dine': typeof SiteDineRoute
+  '/_site/events': typeof SiteEventsRoute
+  '/_site/experience': typeof SiteExperienceRoute
+  '/_site/gallery': typeof SiteGalleryRoute
+  '/_site/offers': typeof SiteOffersRoute
+  '/_site/policies': typeof SitePoliciesRoute
+  '/management/dining': typeof ManagementDiningRoute
+  '/management/events': typeof ManagementEventsRoute
+  '/management/front-desk': typeof ManagementFrontDeskRoute
+  '/management/housekeeping': typeof ManagementHousekeepingRoute
+  '/management/inventory': typeof ManagementInventoryRoute
+  '/management/staff': typeof ManagementStaffRoute
+  '/_site/': typeof SiteIndexRoute
+  '/management/': typeof ManagementIndexRoute
+  '/_site/stay/$slug': typeof SiteStaySlugRoute
+  '/_site/stay/': typeof SiteStayIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/management'
+    | '/about'
+    | '/account'
+    | '/book'
+    | '/contact'
+    | '/dine'
+    | '/events'
+    | '/experience'
+    | '/gallery'
+    | '/offers'
+    | '/policies'
+    | '/management/dining'
+    | '/management/events'
+    | '/management/front-desk'
+    | '/management/housekeeping'
+    | '/management/inventory'
+    | '/management/staff'
+    | '/management/'
+    | '/stay/$slug'
+    | '/stay/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/about'
+    | '/account'
+    | '/book'
+    | '/contact'
+    | '/dine'
+    | '/events'
+    | '/experience'
+    | '/gallery'
+    | '/offers'
+    | '/policies'
+    | '/management/dining'
+    | '/management/events'
+    | '/management/front-desk'
+    | '/management/housekeeping'
+    | '/management/inventory'
+    | '/management/staff'
+    | '/'
+    | '/management'
+    | '/stay/$slug'
+    | '/stay'
+  id:
+    | '__root__'
+    | '/_site'
+    | '/management'
+    | '/_site/about'
+    | '/_site/account'
+    | '/_site/book'
+    | '/_site/contact'
+    | '/_site/dine'
+    | '/_site/events'
+    | '/_site/experience'
+    | '/_site/gallery'
+    | '/_site/offers'
+    | '/_site/policies'
+    | '/management/dining'
+    | '/management/events'
+    | '/management/front-desk'
+    | '/management/housekeeping'
+    | '/management/inventory'
+    | '/management/staff'
+    | '/_site/'
+    | '/management/'
+    | '/_site/stay/$slug'
+    | '/_site/stay/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  SiteRoute: typeof SiteRouteWithChildren
+  ManagementRoute: typeof ManagementRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_site': {
+      id: '/_site'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof SiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/management': {
+      id: '/management'
+      path: '/management'
+      fullPath: '/management'
+      preLoaderRoute: typeof ManagementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_site/': {
+      id: '/_site/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof SiteIndexRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/about': {
+      id: '/_site/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof SiteAboutRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/account': {
+      id: '/_site/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof SiteAccountRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/book': {
+      id: '/_site/book'
+      path: '/book'
+      fullPath: '/book'
+      preLoaderRoute: typeof SiteBookRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/contact': {
+      id: '/_site/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof SiteContactRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/dine': {
+      id: '/_site/dine'
+      path: '/dine'
+      fullPath: '/dine'
+      preLoaderRoute: typeof SiteDineRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/events': {
+      id: '/_site/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof SiteEventsRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/experience': {
+      id: '/_site/experience'
+      path: '/experience'
+      fullPath: '/experience'
+      preLoaderRoute: typeof SiteExperienceRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/gallery': {
+      id: '/_site/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof SiteGalleryRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/offers': {
+      id: '/_site/offers'
+      path: '/offers'
+      fullPath: '/offers'
+      preLoaderRoute: typeof SiteOffersRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/policies': {
+      id: '/_site/policies'
+      path: '/policies'
+      fullPath: '/policies'
+      preLoaderRoute: typeof SitePoliciesRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/management/': {
+      id: '/management/'
+      path: '/'
+      fullPath: '/management/'
+      preLoaderRoute: typeof ManagementIndexRouteImport
+      parentRoute: typeof ManagementRoute
+    }
+    '/management/dining': {
+      id: '/management/dining'
+      path: '/dining'
+      fullPath: '/management/dining'
+      preLoaderRoute: typeof ManagementDiningRouteImport
+      parentRoute: typeof ManagementRoute
+    }
+    '/management/events': {
+      id: '/management/events'
+      path: '/events'
+      fullPath: '/management/events'
+      preLoaderRoute: typeof ManagementEventsRouteImport
+      parentRoute: typeof ManagementRoute
+    }
+    '/management/front-desk': {
+      id: '/management/front-desk'
+      path: '/front-desk'
+      fullPath: '/management/front-desk'
+      preLoaderRoute: typeof ManagementFrontDeskRouteImport
+      parentRoute: typeof ManagementRoute
+    }
+    '/management/housekeeping': {
+      id: '/management/housekeeping'
+      path: '/housekeeping'
+      fullPath: '/management/housekeeping'
+      preLoaderRoute: typeof ManagementHousekeepingRouteImport
+      parentRoute: typeof ManagementRoute
+    }
+    '/management/inventory': {
+      id: '/management/inventory'
+      path: '/inventory'
+      fullPath: '/management/inventory'
+      preLoaderRoute: typeof ManagementInventoryRouteImport
+      parentRoute: typeof ManagementRoute
+    }
+    '/management/staff': {
+      id: '/management/staff'
+      path: '/staff'
+      fullPath: '/management/staff'
+      preLoaderRoute: typeof ManagementStaffRouteImport
+      parentRoute: typeof ManagementRoute
+    }
+    '/_site/stay/': {
+      id: '/_site/stay/'
+      path: '/stay'
+      fullPath: '/stay/'
+      preLoaderRoute: typeof SiteStayIndexRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/stay/$slug': {
+      id: '/_site/stay/$slug'
+      path: '/stay/$slug'
+      fullPath: '/stay/$slug'
+      preLoaderRoute: typeof SiteStaySlugRouteImport
+      parentRoute: typeof SiteRoute
     }
   }
 }
 
+interface SiteRouteChildren {
+  SiteAboutRoute: typeof SiteAboutRoute
+  SiteAccountRoute: typeof SiteAccountRoute
+  SiteBookRoute: typeof SiteBookRoute
+  SiteContactRoute: typeof SiteContactRoute
+  SiteDineRoute: typeof SiteDineRoute
+  SiteEventsRoute: typeof SiteEventsRoute
+  SiteExperienceRoute: typeof SiteExperienceRoute
+  SiteGalleryRoute: typeof SiteGalleryRoute
+  SiteOffersRoute: typeof SiteOffersRoute
+  SitePoliciesRoute: typeof SitePoliciesRoute
+  SiteIndexRoute: typeof SiteIndexRoute
+  SiteStaySlugRoute: typeof SiteStaySlugRoute
+  SiteStayIndexRoute: typeof SiteStayIndexRoute
+}
+
+const SiteRouteChildren: SiteRouteChildren = {
+  SiteAboutRoute: SiteAboutRoute,
+  SiteAccountRoute: SiteAccountRoute,
+  SiteBookRoute: SiteBookRoute,
+  SiteContactRoute: SiteContactRoute,
+  SiteDineRoute: SiteDineRoute,
+  SiteEventsRoute: SiteEventsRoute,
+  SiteExperienceRoute: SiteExperienceRoute,
+  SiteGalleryRoute: SiteGalleryRoute,
+  SiteOffersRoute: SiteOffersRoute,
+  SitePoliciesRoute: SitePoliciesRoute,
+  SiteIndexRoute: SiteIndexRoute,
+  SiteStaySlugRoute: SiteStaySlugRoute,
+  SiteStayIndexRoute: SiteStayIndexRoute,
+}
+
+const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
+
+interface ManagementRouteChildren {
+  ManagementDiningRoute: typeof ManagementDiningRoute
+  ManagementEventsRoute: typeof ManagementEventsRoute
+  ManagementFrontDeskRoute: typeof ManagementFrontDeskRoute
+  ManagementHousekeepingRoute: typeof ManagementHousekeepingRoute
+  ManagementInventoryRoute: typeof ManagementInventoryRoute
+  ManagementStaffRoute: typeof ManagementStaffRoute
+  ManagementIndexRoute: typeof ManagementIndexRoute
+}
+
+const ManagementRouteChildren: ManagementRouteChildren = {
+  ManagementDiningRoute: ManagementDiningRoute,
+  ManagementEventsRoute: ManagementEventsRoute,
+  ManagementFrontDeskRoute: ManagementFrontDeskRoute,
+  ManagementHousekeepingRoute: ManagementHousekeepingRoute,
+  ManagementInventoryRoute: ManagementInventoryRoute,
+  ManagementStaffRoute: ManagementStaffRoute,
+  ManagementIndexRoute: ManagementIndexRoute,
+}
+
+const ManagementRouteWithChildren = ManagementRoute._addFileChildren(
+  ManagementRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  SiteRoute: SiteRouteWithChildren,
+  ManagementRoute: ManagementRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

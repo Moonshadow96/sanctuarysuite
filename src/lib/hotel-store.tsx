@@ -87,7 +87,7 @@ export interface NewReservationInput {
   nights: number;
   extras: string[];
   total: number;
-  requests?: string;
+  requests?: string | undefined;
 }
 
 interface HotelContextValue extends HotelState {
@@ -98,11 +98,11 @@ interface HotelContextValue extends HotelState {
   cancelReservation: (reservationId: string) => void;
   setReservationStatus: (reservationId: string, status: ReservationStatus) => void;
   setRoomStatus: (roomId: string, status: RoomStatus) => void;
-  setHousekeeping: (roomId: string, status: HousekeepingStatus, assignedTo?: string) => void;
+  setHousekeeping: (roomId: string, status: HousekeepingStatus, assignedTo?: string | undefined) => void;
   placeOrder: (input: {
     source: "room-service" | "restaurant";
-    roomNumber?: string;
-    table?: string;
+    roomNumber?: string | undefined;
+    table?: string | undefined;
     guestName: string;
     lines: OrderLine[];
   }) => RestaurantOrder;
@@ -112,7 +112,7 @@ interface HotelContextValue extends HotelState {
   setEventStatus: (id: string, status: EventStatus) => void;
   adjustInventory: (id: string, delta: number) => void;
   markNotificationsRead: () => void;
-  signIn: (email: string, password: string) => { ok: boolean; error?: string };
+  signIn: (email: string, password: string) => { ok: boolean; error?: string | undefined };
   signOut: () => void;
   setGuestReference: (reference: string | null) => void;
   reset: () => void;
@@ -348,8 +348,8 @@ export function HotelProvider({ children }: { children: ReactNode }) {
   const placeOrder = useCallback(
     (input: {
       source: "room-service" | "restaurant";
-      roomNumber?: string;
-      table?: string;
+      roomNumber?: string | undefined;
+      table?: string | undefined;
       guestName: string;
       lines: OrderLine[];
     }) => {
