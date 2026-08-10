@@ -4,7 +4,7 @@ import { RoomCard } from "@/components/site/RoomCard";
 import { PageHero, Section, SectionHeading } from "@/components/site/Section";
 import { images, roomTypes } from "@/lib/hotel-data";
 
-export const Route = createFileRoute("/_site/stay")({
+export const Route = createFileRoute("/_site/stay/")({
   head: () => ({
     meta: [
       { title: "Rooms & Suites — The Splendid Sanctuary" },
