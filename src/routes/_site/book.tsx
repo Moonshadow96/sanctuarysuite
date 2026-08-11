@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { bookingExtras, extraTotal, hotel, money, roomTypes } from "@/lib/hotel-data";
+import { bookingExtras, extraTotal, HOTEL, money, roomTypes } from "@/lib/hotel-data";
 import { useHotel } from "@/lib/hotel-store";
 import { cn } from "@/lib/utils";
 
@@ -252,9 +252,9 @@ function BookPage() {
   const downloadConfirmation = () => {
     if (!confirmed) return;
     const lines = [
-      hotel.name,
-      hotel.address,
-      hotel.phone,
+      HOTEL.name,
+      HOTEL.address,
+      HOTEL.phone,
       "",
       "RESERVATION CONFIRMED",
       `Reference: ${confirmed.reference}`,
@@ -370,7 +370,7 @@ function BookPage() {
                 {roomTypes.filter((r) => r.capacity >= guests).length === 0 ? (
                   <p className="rounded-md border border-border/70 p-6 text-sm text-muted-foreground">
                     No accommodation sleeps {guests} guests. Please reduce the party size or contact
-                    us at {hotel.phone} for connecting rooms.
+                    us at {HOTEL.phone} for connecting rooms.
                   </p>
                 ) : null}
                 <div className="grid gap-4">
