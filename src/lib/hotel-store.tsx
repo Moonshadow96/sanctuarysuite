@@ -79,19 +79,67 @@ const initialState: HotelState = {
 const nowISO = () => new Date().toISOString().slice(0, 10);
 const uid = (prefix: string) => `${prefix}-${Math.random().toString(36).slice(2, 9)}`;
 
+const ACTIVE_STATUSES: ReservationStatus[] = ["pending", "confirmed", "checked-in"];
+
+/** Half-open date overlap: [aIn, aOut) intersects [bIn, bOut). */
+export const datesOverlap = (aIn: string, aOut: string, bIn: string, bOut: string) =>
+  aIn < bOut && bIn < aOut;
+
+export function isRoomFree(
+  room: Room,
+  reservations: Reservation[],
+  checkIn: string,
+  checkOut: string,
+) {
+  if (room.status === "maintenance" || room.housekeeping === "maintenance") return false;
+  return !reservations.some(
+    (r) =>
+      r.roomNumber === room.number &&
+      ACTIVE_STATUSES.includes(r.status) &&
+      datesOverlap(checkIn, checkOut, r.checkIn, r.checkOut),
+  );
+}
+
+/** Number of physically free rooms per room type for a date range. */
+export function availabilityByType(
+  rooms: Room[],
+  reservations: Reservation[],
+  checkIn: string,
+  checkOut: string,
+) {
+  const counts: Record<string, number> = {};
+  for (const room of rooms) {
+    counts[room.typeId] ??= 0;
+    if (isRoomFree(room, reservations, checkIn, checkOut)) counts[room.typeId] += 1;
+  }
+  return counts;
+}
+
 export interface NewReservationInput {
   guestName: string;
   email: string;
   phone: string;
+  country?: string | undefined;
+  arrival?: string | undefined;
   roomTypeId: string;
   checkIn: string;
   checkOut: string;
   guests: number;
   nights: number;
   extras: string[];
+  extrasTotal?: number | undefined;
+  taxes?: number | undefined;
   total: number;
   requests?: string | undefined;
+  payment?: "paid" | "pending" | undefined;
 }
+
+export interface CreateReservationResult {
+  ok: boolean;
+  reservation?: Reservation | undefined;
+  error?: string | undefined;
+}
+
 
 interface HotelContextValue extends HotelState {
   createReservation: (input: NewReservationInput) => Reservation;
