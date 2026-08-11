@@ -79,23 +79,73 @@ const initialState: HotelState = {
 const nowISO = () => new Date().toISOString().slice(0, 10);
 const uid = (prefix: string) => `${prefix}-${Math.random().toString(36).slice(2, 9)}`;
 
+const ACTIVE_STATUSES: ReservationStatus[] = ["pending", "confirmed", "checked-in"];
+
+/** Half-open date overlap: [aIn, aOut) intersects [bIn, bOut). */
+export const datesOverlap = (aIn: string, aOut: string, bIn: string, bOut: string) =>
+  aIn < bOut && bIn < aOut;
+
+export function isRoomFree(
+  room: Room,
+  reservations: Reservation[],
+  checkIn: string,
+  checkOut: string,
+) {
+  if (room.status === "maintenance" || room.housekeeping === "maintenance") return false;
+  return !reservations.some(
+    (r) =>
+      r.roomNumber === room.number &&
+      ACTIVE_STATUSES.includes(r.status) &&
+      datesOverlap(checkIn, checkOut, r.checkIn, r.checkOut),
+  );
+}
+
+/** Number of physically free rooms per room type for a date range. */
+export function availabilityByType(
+  rooms: Room[],
+  reservations: Reservation[],
+  checkIn: string,
+  checkOut: string,
+) {
+  const counts: Record<string, number> = {};
+  for (const room of rooms) {
+    const free = isRoomFree(room, reservations, checkIn, checkOut) ? 1 : 0;
+    counts[room.typeId] = (counts[room.typeId] ?? 0) + free;
+  }
+  return counts;
+}
+
 export interface NewReservationInput {
   guestName: string;
   email: string;
   phone: string;
+  country?: string | undefined;
+  arrival?: string | undefined;
   roomTypeId: string;
   checkIn: string;
   checkOut: string;
   guests: number;
   nights: number;
   extras: string[];
+  extrasTotal?: number | undefined;
+  taxes?: number | undefined;
   total: number;
   requests?: string | undefined;
+  payment?: "paid" | "pending" | undefined;
 }
 
+export interface CreateReservationResult {
+  ok: boolean;
+  reservation?: Reservation | undefined;
+  error?: string | undefined;
+}
+
+
 interface HotelContextValue extends HotelState {
-  createReservation: (input: NewReservationInput) => Reservation;
+  createReservation: (input: NewReservationInput) => CreateReservationResult;
+  availabilityFor: (checkIn: string, checkOut: string) => Record<string, number>;
   assignRoom: (reservationId: string, roomNumber: string) => void;
+
   checkIn: (reservationId: string) => void;
   checkOut: (reservationId: string) => void;
   cancelReservation: (reservationId: string) => void;
@@ -162,14 +212,52 @@ export function HotelProvider({ children }: { children: ReactNode }) {
     read: false,
   });
 
-  const createReservation = useCallback((input: NewReservationInput) => {
+  const createReservation = useCallback((input: NewReservationInput): CreateReservationResult => {
     const reference = `SS-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 90000) + 10000)}`;
-    let created: Reservation | null = null;
+    let result: CreateReservationResult = { ok: false, error: "Reservation could not be created." };
 
     setState((prev) => {
+      // Final availability re-check inside the state transition to prevent double booking.
       const room = prev.rooms.find(
-        (r) => r.typeId === input.roomTypeId && r.status === "available",
+        (r) => r.typeId === input.roomTypeId && isRoomFree(r, prev.reservations, input.checkIn, input.checkOut),
       );
+      if (!room) {
+        result = {
+          ok: false,
+          error: "The selected room is no longer available for these dates. Please choose another room.",
+        };
+        return prev;
+      }
+
+      const roomAmount = (roomTypeById(input.roomTypeId)?.price ?? 0) * input.nights;
+      const charges: Charge[] = [
+        {
+          id: uid("c"),
+          label: `Accommodation · ${input.nights} night${input.nights > 1 ? "s" : ""}`,
+          category: "room",
+          amount: roomAmount,
+          at: input.checkIn,
+        },
+      ];
+      if (input.extrasTotal && input.extrasTotal > 0) {
+        charges.push({
+          id: uid("c"),
+          label: `Stay enhancements · ${input.extras.join(", ")}`,
+          category: "other",
+          amount: input.extrasTotal,
+          at: input.checkIn,
+        });
+      }
+      if (input.taxes && input.taxes > 0) {
+        charges.push({
+          id: uid("c"),
+          label: "Taxes & service charge",
+          category: "other",
+          amount: input.taxes,
+          at: input.checkIn,
+        });
+      }
+
       const reservation: Reservation = {
         id: uid("res"),
         reference,
@@ -177,7 +265,7 @@ export function HotelProvider({ children }: { children: ReactNode }) {
         email: input.email,
         phone: input.phone,
         roomTypeId: input.roomTypeId,
-        roomNumber: room?.number,
+        roomNumber: room.number,
         checkIn: input.checkIn,
         checkOut: input.checkOut,
         guests: input.guests,
@@ -185,35 +273,25 @@ export function HotelProvider({ children }: { children: ReactNode }) {
         extras: input.extras,
         total: input.total,
         status: "confirmed",
-        payment: "paid",
+        payment: input.payment ?? "paid",
         requests: input.requests,
-        charges: [
-          {
-            id: uid("c"),
-            label: `Accommodation · ${input.nights} night${input.nights > 1 ? "s" : ""}`,
-            category: "room",
-            amount: (roomTypeById(input.roomTypeId)?.price ?? 0) * input.nights,
-            at: input.checkIn,
-          },
-        ],
+        charges,
         createdAt: nowISO(),
       };
-      created = reservation;
+      result = { ok: true, reservation };
 
       return {
         ...prev,
         reservations: [reservation, ...prev.reservations],
-        rooms: room
-          ? prev.rooms.map((r) =>
-              r.id === room.id
-                ? { ...r, status: "reserved" as RoomStatus, guestName: input.guestName }
-                : r,
-            )
-          : prev.rooms,
+        rooms: prev.rooms.map((r) =>
+          r.id === room.id
+            ? { ...r, status: "reserved" as RoomStatus, guestName: input.guestName }
+            : r,
+        ),
         notifications: [
           notify(
             "New reservation",
-            `${input.guestName} · ${roomTypeById(input.roomTypeId)?.name ?? "Room"}${room ? ` · Room ${room.number}` : ""}`,
+            `${input.guestName} · ${roomTypeById(input.roomTypeId)?.name ?? "Room"} · Room ${room.number}`,
           ),
           ...prev.notifications,
         ],
@@ -221,8 +299,9 @@ export function HotelProvider({ children }: { children: ReactNode }) {
       };
     });
 
-    return created as unknown as Reservation;
+    return result;
   }, []);
+
 
   const assignRoom = useCallback((reservationId: string, roomNumber: string) => {
     setState((prev) => ({
@@ -566,6 +645,12 @@ export function HotelProvider({ children }: { children: ReactNode }) {
     return { ok: true };
   }, []);
 
+  const availabilityFor = useCallback(
+    (checkIn: string, checkOut: string) =>
+      availabilityByType(state.rooms, state.reservations, checkIn, checkOut),
+    [state.rooms, state.reservations],
+  );
+
   const signOut = useCallback(() => setState((prev) => ({ ...prev, session: null })), []);
 
   const setGuestReference = useCallback(
@@ -586,6 +671,7 @@ export function HotelProvider({ children }: { children: ReactNode }) {
     () => ({
       ...state,
       createReservation,
+      availabilityFor,
       assignRoom,
       checkIn,
       checkOut,
@@ -610,6 +696,7 @@ export function HotelProvider({ children }: { children: ReactNode }) {
     [
       state,
       createReservation,
+      availabilityFor,
       assignRoom,
       checkIn,
       checkOut,
