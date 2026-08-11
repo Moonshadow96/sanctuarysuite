@@ -562,10 +562,75 @@ export const galleryItems = [
   { id: "g8", category: "Events", src: heroImg, alt: "Evening event setting in the garden" },
 ];
 
-export const bookingExtras = [
-  { id: "breakfast", label: "Daily breakfast for two", price: 15000 },
-  { id: "transfer", label: "Airport transfer (return)", price: 40000 },
-  { id: "room-service", label: "Room service package", price: 25000 },
-  { id: "celebration", label: "Celebration package", price: 55000 },
-  { id: "spa", label: "Wellness session", price: 30000 },
+export interface BookingExtra {
+  id: string;
+  label: string;
+  description: string;
+  price: number;
+  per: "stay" | "night" | "item";
+  quantifiable: boolean;
+  maxQty: number;
+}
+
+export const bookingExtras: BookingExtra[] = [
+  {
+    id: "breakfast",
+    label: "Daily breakfast for two",
+    description: "Chef's breakfast served in the restaurant or in-room each morning of your stay.",
+    price: 15000,
+    per: "night",
+    quantifiable: false,
+    maxQty: 1,
+  },
+  {
+    id: "transfer",
+    label: "Airport transfer (return)",
+    description: "Private chauffeur between Murtala Muhammed International and the Sanctuary.",
+    price: 40000,
+    per: "stay",
+    quantifiable: false,
+    maxQty: 1,
+  },
+  {
+    id: "room-service",
+    label: "Room service credit",
+    description: "Pre-paid credit applied to in-room dining during your stay.",
+    price: 25000,
+    per: "item",
+    quantifiable: true,
+    maxQty: 6,
+  },
+  {
+    id: "celebration",
+    label: "Private dining & celebration",
+    description: "Curated private table, floral styling and a celebration cake.",
+    price: 55000,
+    per: "item",
+    quantifiable: true,
+    maxQty: 4,
+  },
+  {
+    id: "spa",
+    label: "Wellness experience",
+    description: "Sixty-minute signature treatment in the wellness suite.",
+    price: 30000,
+    per: "item",
+    quantifiable: true,
+    maxQty: 6,
+  },
+  {
+    id: "wine",
+    label: "Sommelier wine experience",
+    description: "Guided tasting flight in the Sanctuary Cellar with our sommelier.",
+    price: 65000,
+    per: "item",
+    quantifiable: true,
+    maxQty: 6,
+  },
 ];
+
+export function extraTotal(extra: BookingExtra, qty: number, nights: number) {
+  if (extra.per === "night") return extra.price * nights;
+  if (extra.per === "stay") return extra.price;
+  return extra.price * qty;
+}
