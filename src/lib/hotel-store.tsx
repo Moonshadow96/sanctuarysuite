@@ -109,8 +109,8 @@ export function availabilityByType(
 ) {
   const counts: Record<string, number> = {};
   for (const room of rooms) {
-    counts[room.typeId] ??= 0;
-    if (isRoomFree(room, reservations, checkIn, checkOut)) counts[room.typeId] += 1;
+    const free = isRoomFree(room, reservations, checkIn, checkOut) ? 1 : 0;
+    counts[room.typeId] = (counts[room.typeId] ?? 0) + free;
   }
   return counts;
 }
