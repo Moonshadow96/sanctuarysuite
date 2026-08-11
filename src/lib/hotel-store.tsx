@@ -645,6 +645,12 @@ export function HotelProvider({ children }: { children: ReactNode }) {
     return { ok: true };
   }, []);
 
+  const availabilityFor = useCallback(
+    (checkIn: string, checkOut: string) =>
+      availabilityByType(state.rooms, state.reservations, checkIn, checkOut),
+    [state.rooms, state.reservations],
+  );
+
   const signOut = useCallback(() => setState((prev) => ({ ...prev, session: null })), []);
 
   const setGuestReference = useCallback(
@@ -665,6 +671,7 @@ export function HotelProvider({ children }: { children: ReactNode }) {
     () => ({
       ...state,
       createReservation,
+      availabilityFor,
       assignRoom,
       checkIn,
       checkOut,
@@ -689,6 +696,7 @@ export function HotelProvider({ children }: { children: ReactNode }) {
     [
       state,
       createReservation,
+      availabilityFor,
       assignRoom,
       checkIn,
       checkOut,
