@@ -142,8 +142,10 @@ export interface CreateReservationResult {
 
 
 interface HotelContextValue extends HotelState {
-  createReservation: (input: NewReservationInput) => Reservation;
+  createReservation: (input: NewReservationInput) => CreateReservationResult;
+  availabilityFor: (checkIn: string, checkOut: string) => Record<string, number>;
   assignRoom: (reservationId: string, roomNumber: string) => void;
+
   checkIn: (reservationId: string) => void;
   checkOut: (reservationId: string) => void;
   cancelReservation: (reservationId: string) => void;
