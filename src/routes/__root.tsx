@@ -103,7 +103,39 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Hotel",
+          name: "The Splendid Sanctuary",
+          description:
+            "Luxury hotel in Ikoyi, Lagos offering refined rooms and suites, dining, pool, snooker and event spaces.",
+          url: "https://sanctuarysuite.lovable.app/",
+          telephone: "+234 816 952 6523",
+          email: "reservations@splendidsanctuary.com",
+          priceRange: "₦₦₦",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "22 Sanctuary Crescent, Park View Estate",
+            addressLocality: "Ikoyi",
+            addressRegion: "Lagos",
+            addressCountry: "NG",
+          },
+          amenityFeature: [
+            "Swimming pool",
+            "Restaurant",
+            "Wine cellar",
+            "Fitness centre",
+            "Snooker and table tennis",
+            "Event and meeting spaces",
+          ].map((name) => ({ "@type": "LocationFeatureSpecification", name, value: true })),
+        }),
+      },
+    ],
   }),
+
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,

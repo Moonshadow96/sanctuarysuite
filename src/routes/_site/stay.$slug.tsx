@@ -12,20 +12,48 @@ export const Route = createFileRoute("/_site/stay/$slug")({
     if (!room) throw notFound();
     return { room };
   },
-  head: ({ loaderData }) => {
+  head: ({ params, loaderData }) => {
     if (!loaderData) {
       return { meta: [{ title: "Room not found — The Splendid Sanctuary" }, { name: "robots", content: "noindex" }] };
     }
     const { room } = loaderData;
+    const url = `https://sanctuarysuite.lovable.app/stay/${params.slug}`;
     return {
       meta: [
         { title: `${room.name} — The Splendid Sanctuary` },
         { name: "description", content: room.short },
         { property: "og:title", content: `${room.name} — The Splendid Sanctuary` },
         { property: "og:description", content: room.short },
+        { property: "og:url", content: url },
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HotelRoom",
+            name: room.name,
+            description: room.short,
+            url,
+            occupancy: { "@type": "QuantitativeValue", maxValue: room.capacity },
+            containedInPlace: {
+              "@type": "Hotel",
+              name: "The Splendid Sanctuary",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "22 Sanctuary Crescent, Park View Estate",
+                addressLocality: "Ikoyi",
+                addressRegion: "Lagos",
+                addressCountry: "NG",
+              },
+            },
+          }),
+        },
       ],
     };
   },
+
   component: RoomDetail,
 });
 

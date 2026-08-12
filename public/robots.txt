@@ -12,3 +12,6 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /management
+
+Sitemap: https://sanctuarysuite.lovable.app/sitemap.xml
