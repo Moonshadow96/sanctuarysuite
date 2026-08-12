@@ -55,8 +55,9 @@ function Home() {
           <div className="fade-up max-w-3xl">
             <p className="eyebrow text-gold">{HOTEL.address}</p>
             <h1 className="mt-5 font-display text-5xl leading-[1.02] text-balance text-primary-foreground sm:text-6xl lg:text-7xl">
-              The Splendid Sanctuary
+              The Splendid Sanctuary — Luxury Hotel &amp; Suites in Ikoyi, Lagos
             </h1>
+
             <p className="mt-4 font-display text-2xl text-gold italic sm:text-3xl">
               {HOTEL.tagline}
             </p>
