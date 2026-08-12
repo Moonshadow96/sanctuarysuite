@@ -20,8 +20,34 @@ export const Route = createFileRoute("/_site/dine")({
       },
       { property: "og:title", content: "Dine, Unwind & Indulge — The Splendid Sanctuary" },
       { property: "og:description", content: "Restaurant, lounge, wine and beverages at the Sanctuary." },
+      { property: "og:url", content: "https://sanctuarysuite.lovable.app/dine" },
+    ],
+    links: [{ rel: "canonical", href: "https://sanctuarysuite.lovable.app/dine" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FoodEstablishment",
+          name: "The Sanctuary Restaurant",
+          description:
+            "Restaurant, lounge and wine cellar at The Splendid Sanctuary, with all-day dining and 24-hour room service.",
+          url: "https://sanctuarysuite.lovable.app/dine",
+          servesCuisine: ["Nigerian", "Continental"],
+          telephone: "+234 816 952 6523",
+          priceRange: "₦₦₦",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "22 Sanctuary Crescent, Park View Estate",
+            addressLocality: "Ikoyi",
+            addressRegion: "Lagos",
+            addressCountry: "NG",
+          },
+        }),
+      },
     ],
   }),
+
   component: DinePage,
 });
 
