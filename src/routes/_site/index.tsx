@@ -10,7 +10,7 @@ import { HOTEL, images, offers, reviews, roomTypes, facilities } from "@/lib/hot
 export const Route = createFileRoute("/_site/")({
   head: () => ({
     meta: [
-      { title: "The Splendid Sanctuary — Luxury Hotel Where Luxury Meets Tranquility" },
+      { title: "The Splendid Sanctuary — Luxury Hotel in Ikoyi, Lagos" },
       {
         name: "description",
         content:
@@ -22,8 +22,11 @@ export const Route = createFileRoute("/_site/")({
         content:
           "Refined accommodation, exceptional dining and unforgettable leisure experiences designed around your comfort.",
       },
+      { property: "og:url", content: "https://sanctuarysuite.lovable.app/" },
     ],
+    links: [{ rel: "canonical", href: "https://sanctuarysuite.lovable.app/" }],
   }),
+
   component: Home,
 });
 
