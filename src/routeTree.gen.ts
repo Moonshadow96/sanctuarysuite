@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SiteRouteImport } from './routes/_site'
 import { Route as ManagementRouteImport } from './routes/management'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SiteIndexRouteImport } from './routes/_site/index'
 import { Route as SiteAboutRouteImport } from './routes/_site/about'
 import { Route as SiteAccountRouteImport } from './routes/_site/account'
@@ -41,6 +42,11 @@ const SiteRoute = SiteRouteImport.update({
 const ManagementRoute = ManagementRouteImport.update({
   id: '/management',
   path: '/management',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SiteIndexRoute = SiteIndexRouteImport.update({
@@ -157,6 +163,7 @@ const SiteStaySlugRoute = SiteStaySlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
   '/management': typeof ManagementRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/about': typeof SiteAboutRoute
   '/account': typeof SiteAccountRoute
   '/book': typeof SiteBookRoute
@@ -180,6 +187,7 @@ export interface FileRoutesByFullPath {
   '/stay/': typeof SiteStayIndexRoute
 }
 export interface FileRoutesByTo {
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/about': typeof SiteAboutRoute
   '/account': typeof SiteAccountRoute
   '/book': typeof SiteBookRoute
@@ -207,6 +215,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_site': typeof SiteRouteWithChildren
   '/management': typeof ManagementRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_site/about': typeof SiteAboutRoute
   '/_site/account': typeof SiteAccountRoute
   '/_site/book': typeof SiteBookRoute
@@ -235,6 +244,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/management'
+    | '/sitemap.xml'
     | '/about'
     | '/account'
     | '/book'
@@ -258,6 +268,7 @@ export interface FileRouteTypes {
     | '/stay/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/sitemap.xml'
     | '/about'
     | '/account'
     | '/book'
@@ -284,6 +295,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_site'
     | '/management'
+    | '/sitemap.xml'
     | '/_site/about'
     | '/_site/account'
     | '/_site/book'
@@ -311,6 +323,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   SiteRoute: typeof SiteRouteWithChildren
   ManagementRoute: typeof ManagementRouteWithChildren
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -327,6 +340,13 @@ declare module '@tanstack/react-router' {
       path: '/management'
       fullPath: '/management'
       preLoaderRoute: typeof ManagementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_site/': {
@@ -551,6 +571,7 @@ const ManagementRouteWithChildren = ManagementRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   SiteRoute: SiteRouteWithChildren,
   ManagementRoute: ManagementRouteWithChildren,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
