@@ -36,7 +36,7 @@ export const Route = createFileRoute("/_site/stay/$slug")({
             name: room.name,
             description: room.short,
             url,
-            occupancy: { "@type": "QuantitativeValue", maxValue: room.sleeps ?? 2 },
+            occupancy: { "@type": "QuantitativeValue", maxValue: room.capacity },
             containedInPlace: {
               "@type": "Hotel",
               name: "The Splendid Sanctuary",
